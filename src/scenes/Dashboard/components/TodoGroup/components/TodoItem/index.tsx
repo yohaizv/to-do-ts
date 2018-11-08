@@ -34,7 +34,7 @@ const TodoItem: React.SFC<ITodoItemProps> = ({ message, createdOn }) => (
       <Checkbox onChange={onChange} />
       <Text>{message}</Text>
       <Moment format="MM/DD" style={{ textDecoration: "underline" }}>
-        {createdOn.toString()}
+        {createdOn.toISOString()}
       </Moment>
     </Container>
   </div>
