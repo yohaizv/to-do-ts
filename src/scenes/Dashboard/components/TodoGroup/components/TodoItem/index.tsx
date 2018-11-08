@@ -25,16 +25,16 @@ const onChange = (e:any) => {
 
 interface ITodoItemProps {
   message: string;
-  createdOn: Date;
+  dueDate: Date;
 }
 
-const TodoItem: React.SFC<ITodoItemProps> = ({ message, createdOn }) => (
+const TodoItem: React.SFC<ITodoItemProps> = ({ message, dueDate }) => (
   <div>
     <Container>
       <Checkbox onChange={onChange} />
       <Text>{message}</Text>
       <Moment format="MM/DD" style={{ textDecoration: "underline" }}>
-        {createdOn.toISOString()}
+        {dueDate.toISOString()}
       </Moment>
     </Container>
   </div>
