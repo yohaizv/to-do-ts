@@ -1,9 +1,9 @@
 import * as React from 'react';
-import TodoItem from './components/TodoItem.tsx';
+import TodoGroup from './components/TodoGroup/';
 
 const Dashboard : React.SFC = ()=>(
     <div>
-        <TodoItem message='Call to Jo' createdOn={new Date()}/>
+        <TodoGroup title='Inbox'/>
     </div>
 );
 
