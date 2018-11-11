@@ -1,8 +1,9 @@
+import { Icon } from 'antd';
 import * as React from "react";
+import TodoItem from "src/components/TodoList/components/TodoItem";
 import styled from "styled-components";
-import AddTask from "./components/AddTask";
-import TaskEditorManager, { ActionType } from "./components/TaskEditorManager";
-import TodoItem from "./components/TodoItem/";
+import ActionLink from "../../../../components/ActionLink";
+import UpsertTask, { ActionType } from "../../../../components/UpsertTask";
 
 const Container = styled.div`
   margin: 0 10px 0 10px;
@@ -14,7 +15,12 @@ interface ITodoGroupProps {
 }
 interface ITodoGroupState {
   isNewTaskOpen: boolean;
-  todos: Array<{ message: string; dueDate: Date }>;
+  todos: Array<{
+    id: number;
+    message: string;
+    dueDate: Date;
+    completed: boolean;
+  }>;
 }
 
 export default class TodoGroup extends React.Component<
@@ -27,11 +33,15 @@ export default class TodoGroup extends React.Component<
       isNewTaskOpen: false,
       todos: [
         {
+          completed: false,
           dueDate: new Date(),
+          id: 1,
           message: "Call to Jo"
         },
         {
+          completed: false,
           dueDate: new Date(2018, 1, 1),
+          id: 2,
           message: "Send to Rachel"
         }
       ]
@@ -49,7 +59,7 @@ export default class TodoGroup extends React.Component<
     this.setState(prevState => ({
       ...prevState,
       isNewTaskOpen: false,
-      todos: [...prevState.todos, { message, dueDate }]
+      todos: [...prevState.todos, { message, dueDate, completed: false, id: 0 }]
     }));
   }
 
@@ -57,6 +67,10 @@ export default class TodoGroup extends React.Component<
     this.setState({
       isNewTaskOpen: false
     });
+  }
+
+  public onChange(event: any) {
+    alert(event);
   }
 
   public render() {
@@ -67,17 +81,29 @@ export default class TodoGroup extends React.Component<
         <h2>{title}</h2>
         <div>
           {todos.map((todo, i) => (
-            <TodoItem message={todo.message} dueDate={todo.dueDate} key={i} />
+            <TodoItem
+              onChange={this.onChange}
+              completed={todo.completed}
+              message={todo.message}
+              dueDate={todo.dueDate}
+              key={i}
+            />
           ))}
         </div>
         {isNewTaskOpen && (
-          <TaskEditorManager
+          <UpsertTask
             actionType={ActionType.Create}
             onSave={this.createTask}
             onCancel={this.onAddTaskCancel}
           />
         )}
-        {!isOverdue && <AddTask onClick={this.onAddTaskClick} />}
+        {!isOverdue && (
+          <ActionLink
+            label="Add Task"
+            icon={<Icon type="plus" />}
+            onClick={this.onAddTaskClick}
+          />
+        )}
       </Container>
     );
   }

@@ -1,12 +1,12 @@
 import * as React from "react";
-import TaskEditor from "./components/TaskEditor";
+import TaskEditor from "./components/ToDoCreator";
 
 export enum ActionType {
   Create,
   Update
 }
 
-interface ITaskEditorManagerProps {
+interface IUpsertTaskProps {
   actionType: ActionType;
   taskId?: string;
   taskDescription?: string;
@@ -14,16 +14,16 @@ interface ITaskEditorManagerProps {
   onSave: (description: string, dueDate: Date) => void;
   onCancel: () => void;
 }
-interface ITaskEditorManagerState {
+interface IUpsertTaskState {
   description: string;
   dueDate: Date;
   id?: string;
 }
-export default class TaskEditorManager extends React.Component<
-  ITaskEditorManagerProps,
-  ITaskEditorManagerState
+export default class UpsertTask extends React.Component<
+  IUpsertTaskProps,
+  IUpsertTaskState
 > {
-  constructor(props: ITaskEditorManagerProps) {
+  constructor(props: IUpsertTaskProps) {
     super(props);
     const { taskId, taskDescription, taskDueDate } = props;
     this.state = {

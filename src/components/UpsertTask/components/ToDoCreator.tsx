@@ -3,7 +3,7 @@ import * as moment from "moment";
 import * as React from "react";
 import styled from "styled-components";
 
-interface ITaskEditorProps {
+interface IToDoCreatorProps {
   taskDescription: string;
   onTaskDescriptionChange: (e: any) => void;
   taskDueDate: Date;
@@ -13,7 +13,7 @@ interface ITaskEditorProps {
   saveButtonText: string;
 }
 
-const TaskEditor: React.SFC<ITaskEditorProps> = props => {
+const ToDoCreator: React.SFC<IToDoCreatorProps> = props => {
   return (
     <div>
       <TaskContainer>
@@ -41,7 +41,7 @@ const TaskEditor: React.SFC<ITaskEditorProps> = props => {
   );
 };
 
-export default TaskEditor;
+export default ToDoCreator;
 
 const TaskContainer = styled.div`
   display: flex;
