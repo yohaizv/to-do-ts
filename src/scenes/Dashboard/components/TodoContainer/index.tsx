@@ -1,6 +1,6 @@
-import { Icon } from 'antd';
+import { Icon } from "antd";
 import * as React from "react";
-import TodoItem from "src/components/TodoList/components/TodoItem";
+import TodoList, { ITodoLists } from "src/components/TodoList";
 import styled from "styled-components";
 import ActionLink from "../../../../components/ActionLink";
 import UpsertTask, { ActionType } from "../../../../components/UpsertTask";
@@ -9,42 +9,35 @@ const Container = styled.div`
   margin: 0 10px 0 10px;
 `;
 
-interface ITodoGroupProps {
+interface ITodoContainerProps {
   title: string;
   isOverdue?: boolean;
 }
-interface ITodoGroupState {
+interface ITodoContainerState {
   isNewTaskOpen: boolean;
-  todos: Array<{
-    id: number;
-    message: string;
-    dueDate: Date;
-    completed: boolean;
-  }>;
+  todos: ITodoLists;
 }
 
-export default class TodoGroup extends React.Component<
-  ITodoGroupProps,
-  ITodoGroupState
+export default class TodoContainer extends React.Component<
+  ITodoContainerProps,
+  ITodoContainerState
 > {
-  constructor(props: ITodoGroupProps) {
+  constructor(props: ITodoContainerProps) {
     super(props);
     this.state = {
       isNewTaskOpen: false,
-      todos: [
-        {
+      todos: {
+        1: {
           completed: false,
           dueDate: new Date(),
-          id: 1,
           message: "Call to Jo"
         },
-        {
+        2: {
           completed: false,
           dueDate: new Date(2018, 1, 1),
-          id: 2,
           message: "Send to Rachel"
         }
-      ]
+      }
     };
     this.bindFunctions();
   }
@@ -56,11 +49,17 @@ export default class TodoGroup extends React.Component<
   }
 
   public createTask(message: string, dueDate: Date) {
-    this.setState(prevState => ({
-      ...prevState,
-      isNewTaskOpen: false,
-      todos: [...prevState.todos, { message, dueDate, completed: false, id: 0 }]
-    }));
+    this.setState(prevState => {
+      const newId = this.generateTodoId(prevState.todos);
+      return {
+        ...prevState,
+        isNewTaskOpen: false,
+        todos: {
+          ...prevState.todos,
+          [newId]: { message, dueDate, completed: false }
+        }
+      };
+    });
   }
 
   public onAddTaskCancel() {
@@ -69,8 +68,18 @@ export default class TodoGroup extends React.Component<
     });
   }
 
-  public onChange(event: any) {
-    alert(event);
+  public onChange(todoId: number, completed: boolean) {
+    this.setState(pervState => ({
+      ...pervState,
+      todos: {
+        ...pervState.todos,
+        [todoId]: {
+          completed,
+          dueDate: new Date(2018, 1, 1),
+          message: "Send to Rachel"
+        }
+      }
+    }));
   }
 
   public render() {
@@ -80,15 +89,7 @@ export default class TodoGroup extends React.Component<
       <Container>
         <h2>{title}</h2>
         <div>
-          {todos.map((todo, i) => (
-            <TodoItem
-              onChange={this.onChange}
-              completed={todo.completed}
-              message={todo.message}
-              dueDate={todo.dueDate}
-              key={i}
-            />
-          ))}
+          <TodoList todos={todos} onChange={this.onChange} />
         </div>
         {isNewTaskOpen && (
           <UpsertTask
@@ -108,9 +109,14 @@ export default class TodoGroup extends React.Component<
     );
   }
 
+  private generateTodoId(todos: ITodoLists): number {
+    return 1 + Math.max(...Object.keys(todos).map(key => +key));
+  }
+
   private bindFunctions() {
     this.onAddTaskClick = this.onAddTaskClick.bind(this);
     this.createTask = this.createTask.bind(this);
     this.onAddTaskCancel = this.onAddTaskCancel.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 }

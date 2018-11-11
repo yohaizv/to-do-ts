@@ -2,33 +2,26 @@ import * as React from "react";
 import Moment from "react-moment";
 import Checkbox from "src/components/Checkbox";
 import styled from "styled-components";
+import ITodoItemProps from "./ITodoItemProps";
 
+const TodoItem: React.SFC<ITodoItemProps> = props => {
+  
+  const onChange = (event: any) => {
+    props.onChange(props.id, event.target.checked);
+  };
 
-
-// const onChange = (e:any) => {
-//   // tslint:disable-next-line:no-console
-//   console.log(e.target.checked) 
-    
-// };
-
-interface ITodoItemProps {
-  message: string;
-  dueDate: Date;
-  onChange:(event:any)=>void,
-  completed:boolean
-}
-
-const TodoItem: React.SFC<ITodoItemProps> = ({ onChange,completed,message, dueDate }) => (
-  <div>
-    <Container>
-      <Checkbox checked={completed} onChange={onChange} />
-      <Text>{message}</Text>
-      <Moment format="MM/DD" style={{ textDecoration: "underline" }}>
-        {dueDate.toISOString()}
-      </Moment>
-    </Container>
-  </div>
-);
+  return (
+    <div>
+      <Container>
+        <Checkbox checked={props.todo.completed} onChange={onChange} />
+        <Text>{props.todo.message}</Text>
+        <Moment format="MM/DD" style={{ textDecoration: "underline" }}>
+          {props.todo.dueDate.toISOString()}
+        </Moment>
+      </Container>
+    </div>
+  );
+};
 
 export default TodoItem;
 

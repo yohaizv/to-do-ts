@@ -1,9 +1,9 @@
 import * as React from 'react';
-import TodoGroup from './components/TodoGroup/';
+import TodoContainer from './components/TodoContainer';
 
 const Dashboard : React.SFC = ()=>(
     <div>
-        <TodoGroup title='Inbox'/>
+        <TodoContainer title='Inbox'/>
     </div>
 );
 
