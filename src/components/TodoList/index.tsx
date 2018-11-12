@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ITodoItem } from "./components/ITodoItemProps";
+import ITodo from 'src/models/ITodo';
 import TodoItem from "./components/TodoItem";
 
 export interface ITodoLists {
-  [id: number]: ITodoItem;
+  [id: number]: ITodo;
 }
 
 interface ITodoListProps {

@@ -1,6 +1,15 @@
 import { Icon } from "antd";
 import * as React from "react";
+import { connect } from "react-redux";
+import {
+  addTodo,
+  IAddTodoAction,
+  IToggleTodoAction,
+  toggleTodo
+} from "src/actions/todos";
 import TodoList, { ITodoLists } from "src/components/TodoList";
+import { IState } from "src/reducers";
+import { getTodos } from "src/selectors/todos";
 import styled from "styled-components";
 import ActionLink from "../../../../components/ActionLink";
 import UpsertTask, { ActionType } from "../../../../components/UpsertTask";
@@ -12,32 +21,22 @@ const Container = styled.div`
 interface ITodoContainerProps {
   title: string;
   isOverdue?: boolean;
+  todos: ITodoLists;
+  addTodo: (message: string, dueDate: Date) => IAddTodoAction;
+  onTodoClicked: (todoId: number) => IToggleTodoAction;
 }
 interface ITodoContainerState {
   isNewTaskOpen: boolean;
-  todos: ITodoLists;
 }
 
-export default class TodoContainer extends React.Component<
+class TodoContainer extends React.Component<
   ITodoContainerProps,
   ITodoContainerState
 > {
   constructor(props: ITodoContainerProps) {
     super(props);
     this.state = {
-      isNewTaskOpen: false,
-      todos: {
-        1: {
-          completed: false,
-          dueDate: new Date(),
-          message: "Call to Jo"
-        },
-        2: {
-          completed: false,
-          dueDate: new Date(2018, 1, 1),
-          message: "Send to Rachel"
-        }
-      }
+      isNewTaskOpen: false
     };
     this.bindFunctions();
   }
@@ -49,16 +48,9 @@ export default class TodoContainer extends React.Component<
   }
 
   public createTask(message: string, dueDate: Date) {
-    this.setState(prevState => {
-      const newId = this.generateTodoId(prevState.todos);
-      return {
-        ...prevState,
-        isNewTaskOpen: false,
-        todos: {
-          ...prevState.todos,
-          [newId]: { message, dueDate, completed: false }
-        }
-      };
+    this.props.addTodo(message, dueDate);
+    this.setState({
+      isNewTaskOpen:false
     });
   }
 
@@ -68,23 +60,13 @@ export default class TodoContainer extends React.Component<
     });
   }
 
-  public onChange(todoId: number, completed: boolean) {
-    this.setState(pervState => ({
-      ...pervState,
-      todos: {
-        ...pervState.todos,
-        [todoId]: {
-          completed,
-          dueDate: new Date(2018, 1, 1),
-          message: "Send to Rachel"
-        }
-      }
-    }));
+  public onChange(todoId: number) {
+    this.props.onTodoClicked(todoId);
   }
 
   public render() {
-    const { todos, isNewTaskOpen } = this.state;
-    const { title, isOverdue } = this.props;
+    const {  isNewTaskOpen } = this.state;
+    const { title, isOverdue,todos } = this.props;
     return (
       <Container>
         <h2>{title}</h2>
@@ -109,9 +91,9 @@ export default class TodoContainer extends React.Component<
     );
   }
 
-  private generateTodoId(todos: ITodoLists): number {
-    return 1 + Math.max(...Object.keys(todos).map(key => +key));
-  }
+  // private generateTodoId(todos: ITodoLists): number {
+  //   return 1 + Math.max(...Object.keys(todos).map(key => +key));
+  // }
 
   private bindFunctions() {
     this.onAddTaskClick = this.onAddTaskClick.bind(this);
@@ -120,3 +102,17 @@ export default class TodoContainer extends React.Component<
     this.onChange = this.onChange.bind(this);
   }
 }
+
+const mapStateToProps = (state: IState) => ({
+  todos: getTodos(state)
+});
+
+const mapDispatchToProps = {
+  addTodo,
+  onTodoClicked: toggleTodo
+};
+
+export default connect<any, any, any>(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoContainer);

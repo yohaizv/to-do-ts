@@ -1,11 +1,7 @@
+import ITodo from 'src/models/ITodo';
+
 export default interface ITodoItemProps {
   id: number;
-  todo: ITodoItem;
-  onChange: (todoId: number, completed: boolean) => void;
-}
-
-export interface ITodoItem {  
-  message: string;
-  dueDate: Date;
-  completed: boolean;
+  todo: ITodo;
+  onChange: (todoId: number, completed: boolean) => void; 
 }

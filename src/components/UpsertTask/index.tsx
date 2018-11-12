@@ -8,10 +8,10 @@ export enum ActionType {
 
 interface IUpsertTaskProps {
   actionType: ActionType;
-  taskId?: string;
+  taskId?: number;
   taskDescription?: string;
   taskDueDate?: Date;
-  onSave: (description: string, dueDate: Date) => void;
+  onSave: ( description: string, dueDate: Date,taskId?: number,) => void;
   onCancel: () => void;
 }
 interface IUpsertTaskState {
@@ -25,20 +25,23 @@ export default class UpsertTask extends React.Component<
 > {
   constructor(props: IUpsertTaskProps) {
     super(props);
-    const { taskId, taskDescription, taskDueDate } = props;
+    const { taskDescription, taskDueDate } = props;
     this.state = {
       description: taskDescription || "",
-      dueDate: taskDueDate || new Date(),
-      id: taskId
+      dueDate: taskDueDate || new Date()
     };
 
     this.bindFunctions();
   }
 
   public upsertTask() {
-    const { onSave } = this.props;
+    const { onSave, taskId } = this.props;
     const { description, dueDate } = this.state;
-    onSave(description, dueDate);
+    onSave( description, dueDate,taskId);
+    this.setState({
+      description:  "",
+      dueDate: new Date()
+    })
   }
 
   public onTaskDescriptionChange(event: any) {
