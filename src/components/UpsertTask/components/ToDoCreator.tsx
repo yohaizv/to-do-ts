@@ -1,5 +1,6 @@
 import { Button, DatePicker } from "antd";
 import * as moment from "moment";
+import { Moment } from 'moment';
 import * as React from "react";
 import { ISimpleDate } from 'src/models/ISimpleDate';
 import styled from "styled-components";
@@ -8,13 +9,24 @@ interface IToDoCreatorProps {
   taskDescription: string;
   onTaskDescriptionChange: (e: any) => void;
   taskDueDate: ISimpleDate;
-  onTaskDueDateChange: (e: any) => void;
+  onTaskDueDateChange: (newDate: ISimpleDate) => void;
   onSave: () => void;
   onCancel: () => void;
   saveButtonText: string;
 }
 
 const ToDoCreator: React.SFC<IToDoCreatorProps> = props => {
+
+  const onDateChange = (momentDate:Moment)=>{
+    const newDate:ISimpleDate = {
+      day : momentDate.date(),
+      month : momentDate.month(),
+      year: momentDate.year(),
+
+    }    
+    props.onTaskDueDateChange(newDate);
+  };
+
   return (
     <div>
       <TaskContainer>
@@ -28,7 +40,7 @@ const ToDoCreator: React.SFC<IToDoCreatorProps> = props => {
         <div>
           <DatePicker
             value={moment(props.taskDueDate)}
-            onChange={props.onTaskDueDateChange}
+            onChange={onDateChange}
           />
         </div>
       </TaskContainer>

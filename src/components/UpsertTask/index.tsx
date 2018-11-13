@@ -52,6 +52,8 @@ export default class UpsertTask extends React.Component<
   }
 
   public onTaskDueDateChange(dueDate: ISimpleDate) {
+    // tslint:disable-next-line:no-console
+    console.log(dueDate);
     if (!dueDate) {
       return;
     }

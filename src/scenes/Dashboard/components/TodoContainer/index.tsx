@@ -104,16 +104,12 @@ class TodoContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state: IState) => ({
-  todos: getTodos(state)
-});
-
-const mapDispatchToProps = {
-  addTodo,
-  onTodoClicked: toggleTodo
-};
-
 export default connect<any, any, any>(
-  mapStateToProps,
-  mapDispatchToProps
+  (state: IState) => ({
+    todos: getTodos(state)
+  }),
+  {
+    addTodo,
+    onTodoClicked: toggleTodo
+  }
 )(TodoContainer);

@@ -1,9 +1,9 @@
 import ITodo from "src/models/ITodo";
-import { ISimpleDate } from './../models/ISimpleDate';
+import { ISimpleDate } from "./../models/ISimpleDate";
 
 export enum ActionTypes {
-  ADD_TODO = "[todos] ADD_TODO",
-  TOGGLE_TODO = "[todos] TOGGLE_TODO"
+  ADD_TODO = "[Todos] Add Todo Item",
+  TOGGLE_TODO = "[todos] Toggle Todo Item"
 }
 
 export interface IAddTodoAction {
@@ -16,26 +16,25 @@ export interface IToggleTodoAction {
   payload: { todoId: number };
 }
 
-export function addTodo(message: string, dueDate: ISimpleDate): IAddTodoAction {
-  return {
-    payload: {
-      todo: {
-        completed: false,
-        dueDate,
-        message
-      }
-    },
-    type: ActionTypes.ADD_TODO
-  };
-}
+export const addTodo = (
+  message: string,
+  dueDate: ISimpleDate
+): IAddTodoAction => ({
+  payload: {
+    todo: {
+      completed: false,
+      dueDate,
+      message
+    }
+  },
+  type: ActionTypes.ADD_TODO
+});
 
-export function toggleTodo(todoId: number): IToggleTodoAction {
-  return {
-    payload: {
-      todoId
-    },
-    type: ActionTypes.TOGGLE_TODO
-  };
-}
+export const toggleTodo = (todoId: number): IToggleTodoAction => ({
+  payload: {
+    todoId
+  },
+  type: ActionTypes.TOGGLE_TODO
+});
 
 export type Action = IAddTodoAction | IToggleTodoAction;
