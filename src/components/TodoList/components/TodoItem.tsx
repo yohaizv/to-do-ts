@@ -15,9 +15,9 @@ const TodoItem: React.SFC<ITodoItemProps> = props => {
       <Container>
         <Checkbox checked={props.todo.completed} onChange={onChange} />
         <Text>{props.todo.message}</Text>
-        <Moment format="MM/DD" style={{ textDecoration: "underline" }}>
-          {props.todo.dueDate.toISOString()}
-        </Moment>
+        <Moment 
+        date={new Date(props.todo.dueDate.year,props.todo.dueDate.month,props.todo.dueDate.day)} 
+        format="MM/DD" style={{ textDecoration: "underline" }}/>
       </Container>
     </div>
   );

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ISimpleDate } from 'src/models/ISimpleDate';
 import TaskEditor from "./components/ToDoCreator";
 
 export enum ActionType {
@@ -10,13 +11,13 @@ interface IUpsertTaskProps {
   actionType: ActionType;
   taskId?: number;
   taskDescription?: string;
-  taskDueDate?: Date;
-  onSave: ( description: string, dueDate: Date,taskId?: number,) => void;
+  taskDueDate?: ISimpleDate;
+  onSave: ( description: string, dueDate: ISimpleDate,taskId?: number,) => void;
   onCancel: () => void;
 }
 interface IUpsertTaskState {
   description: string;
-  dueDate: Date;
+  dueDate: ISimpleDate;
   id?: string;
 }
 export default class UpsertTask extends React.Component<
@@ -28,7 +29,7 @@ export default class UpsertTask extends React.Component<
     const { taskDescription, taskDueDate } = props;
     this.state = {
       description: taskDescription || "",
-      dueDate: taskDueDate || new Date()
+      dueDate: taskDueDate || {year:2005,month:1,day:1}
     };
 
     this.bindFunctions();
@@ -40,7 +41,7 @@ export default class UpsertTask extends React.Component<
     onSave( description, dueDate,taskId);
     this.setState({
       description:  "",
-      dueDate: new Date()
+      dueDate: {year:2005,month:1,day:1}
     })
   }
 
@@ -50,7 +51,7 @@ export default class UpsertTask extends React.Component<
     });
   }
 
-  public onTaskDueDateChange(dueDate: Date) {
+  public onTaskDueDateChange(dueDate: ISimpleDate) {
     if (!dueDate) {
       return;
     }

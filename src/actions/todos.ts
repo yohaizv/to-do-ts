@@ -1,4 +1,5 @@
 import ITodo from "src/models/ITodo";
+import { ISimpleDate } from './../models/ISimpleDate';
 
 export enum ActionTypes {
   ADD_TODO = "[todos] ADD_TODO",
@@ -15,7 +16,7 @@ export interface IToggleTodoAction {
   payload: { todoId: number };
 }
 
-export function addTodo(message: string, dueDate: Date): IAddTodoAction {
+export function addTodo(message: string, dueDate: ISimpleDate): IAddTodoAction {
   return {
     payload: {
       todo: {

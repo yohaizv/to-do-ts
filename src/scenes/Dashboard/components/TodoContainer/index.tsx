@@ -8,6 +8,7 @@ import {
   toggleTodo
 } from "src/actions/todos";
 import TodoList, { ITodoLists } from "src/components/TodoList";
+import { ISimpleDate } from "src/models/ISimpleDate";
 import { IState } from "src/reducers";
 import { getTodos } from "src/selectors/todos";
 import styled from "styled-components";
@@ -22,7 +23,7 @@ interface ITodoContainerProps {
   title: string;
   isOverdue?: boolean;
   todos: ITodoLists;
-  addTodo: (message: string, dueDate: Date) => IAddTodoAction;
+  addTodo: (message: string, dueDate: ISimpleDate) => IAddTodoAction;
   onTodoClicked: (todoId: number) => IToggleTodoAction;
 }
 interface ITodoContainerState {
@@ -47,10 +48,10 @@ class TodoContainer extends React.Component<
     });
   }
 
-  public createTask(message: string, dueDate: Date) {
+  public createTask(message: string, dueDate: ISimpleDate) {
     this.props.addTodo(message, dueDate);
     this.setState({
-      isNewTaskOpen:false
+      isNewTaskOpen: false
     });
   }
 
@@ -65,8 +66,8 @@ class TodoContainer extends React.Component<
   }
 
   public render() {
-    const {  isNewTaskOpen } = this.state;
-    const { title, isOverdue,todos } = this.props;
+    const { isNewTaskOpen } = this.state;
+    const { title, isOverdue, todos } = this.props;
     return (
       <Container>
         <h2>{title}</h2>

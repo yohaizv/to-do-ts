@@ -1,12 +1,13 @@
 import { Button, DatePicker } from "antd";
 import * as moment from "moment";
 import * as React from "react";
+import { ISimpleDate } from 'src/models/ISimpleDate';
 import styled from "styled-components";
 
 interface IToDoCreatorProps {
   taskDescription: string;
   onTaskDescriptionChange: (e: any) => void;
-  taskDueDate: Date;
+  taskDueDate: ISimpleDate;
   onTaskDueDateChange: (e: any) => void;
   onSave: () => void;
   onCancel: () => void;

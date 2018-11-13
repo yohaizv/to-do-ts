@@ -1,6 +1,8 @@
+import { ISimpleDate } from './ISimpleDate';
+
 export default interface ITodo {  
     message: string;
-    dueDate: Date;
+    dueDate: ISimpleDate;
     completed: boolean;
   }
   
